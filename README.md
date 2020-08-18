@@ -1,4 +1,4 @@
-# Expotable-Money
+# Exoptable-Money
 
 
 # ROADMAP:
