@@ -45,3 +45,4 @@ Just a simple update to include an infinite mode to the game (for some reason)
 
 
 ## COMPILE AND LAUNCH - Expected by APR 2021
+slight optimizations (mainly __slots__), removing uncesseray code and some bug fixes
