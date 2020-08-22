@@ -16,7 +16,7 @@ A menu that will allow to upgrade the different types of the moneys (and one tha
 A letter placeholder will appear every time a letter should appear
 
 
-## Add coins - Expected by OCT 2020
+## Add Coins - Expected by OCT 2020
 
 
 ## Add Gems - Expected by NOV 2020
