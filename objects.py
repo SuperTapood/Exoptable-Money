@@ -15,7 +15,7 @@ class Rect:
 		rect(self.scr, self.color, self.rect, self.width)
 		return
 	pass
-class Button():
+class Button:
 	last_click = time()
 
 	def check_click(self):
@@ -95,3 +95,16 @@ class Rect_Text:
 		x, y, w, h = self.text.get_rekt()
 		self.rect = Rect(self.scr, self.r_color, x, y , w, h)
 		return
+	pass
+class Text_Button:
+	def __init__(self, scr, txt, x, y, font_size, t_color, r_color, font="freesansbold.ttf", resp=lambda: None):
+		self.text = Text(scr, txt, x, y, font_size, t_color, font)
+		x, y, w, h = self.text.get_rekt()
+		self.Rect = Rect_Button(scr, r_color, x, y, w, h, resp)
+		return
+
+	def blit(self):
+		self.Rect.blit()
+		self.text.blit()
+		return
+	pass

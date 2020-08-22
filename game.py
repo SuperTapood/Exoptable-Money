@@ -5,6 +5,7 @@ from complex import Machine, HUD
 from time import time
 from group import Group
 from fallables import Dollar
+from pygame.mouse import get_pos
 
 
 class Game:
@@ -52,11 +53,11 @@ class Game:
 
 	def clean_groups(self):
 		for group, value in zip(self.groups, self.values):
-			count = group.remove(lambda obj: obj.y > 800, count=True)
+			count = group.remove(lambda obj: obj.y > 800 or obj.y < 0, count=True)
 			self.moneys += count * self.values[value]
 		return
 
-	def start(self):
+	def game(self):
 		while True:
 			start = time()
 			self.__check_exit()
@@ -70,4 +71,14 @@ class Game:
 			pygame.display.update()
 			# print(1 / (time()- start))
 		return
+
+	def start(self):
+		main_menu = Scenes.get_main_menu(self.scr, self.game)
+		while True:
+			break
+			self.fill(DARK_GREEN)
+			self.__check_exit()
+			main_menu.blit()
+			pygame.display.update()
+		self.game()
 	pass
