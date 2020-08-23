@@ -27,6 +27,7 @@ class Game:
 		self.groups = [dollars]
 		return
 
+
 	def __check_exit(self):
 		for event in pygame.event.get():
 				if event.type == pygame.QUIT:
@@ -70,11 +71,12 @@ class Game:
 			self.blit_groups()
 			self.clean_groups()
 			pygame.display.update()
-			# print(1 / (time()- start))
+			print(1 / (time()- start))
 		return
 
 	def start(self):
 		main_menu = Scenes.get_main_menu(self.scr, self.game)
+		# self.shop()
 		while True:
 			break
 			self.fill(DARK_GREEN)
@@ -85,14 +87,19 @@ class Game:
 		return
 
 	def shop(self):
-		shop_menu = Scenes.get_shop_menu(self.scr, self.values, self.maxes)
+		shop_menu = Scenes.get_shop_menu(self)
 		while True:
+			start = time()
+			self.blit_groups()
 			self.fill(DARK_GREEN)
 			self.__check_exit()
 			if self.machine.active:
 				self.make_money()
 			self.clean_groups()
+			shop_menu.blit()
+			self.update_HUD()
 			pygame.display.update()
+			print(1 / (time()- start))
 		return
 
 	def data_generate(self):
@@ -114,5 +121,14 @@ class Game:
 				setattr(self, entry, data[entry])
 		except Exception as e:
 			pass
+		return
+
+	def buy(self, button):
+		if button.price <= self.moneys:
+			self.moneys -= button.price
+			if button.name == "machine":
+				self.upgrade_machine
+			else:
+				self.values[button.name] = button.reward
 		return
 	pass

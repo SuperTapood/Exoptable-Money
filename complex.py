@@ -36,6 +36,7 @@ class HUD:
 		self.save = Text_Button(scr, "SAVE", 200, 50, 50, BLACK, WHITE, resp=game.save)
 		self.load = Text_Button(scr, "LOAD", 400, 50, 50, BLACK, WHITE, resp=game.load)
 		self.buy = Text_Button(scr, "BUY", 600, 50, 50, BLACK, WHITE, resp=game.shop)
+		self.main = Text_Button(scr, "MAIN", 800, 50, 50, BLACK, WHITE, resp=game.game)
 		return
 
 	def format(self, num):
@@ -53,5 +54,6 @@ class HUD:
 		self.save.blit()
 		self.load.blit()
 		self.buy.blit()
+		self.main.blit()
 		return
 	pass
