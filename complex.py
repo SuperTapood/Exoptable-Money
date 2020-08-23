@@ -1,4 +1,4 @@
-from objects import Rect, Rect_Button, Rect_Text
+from objects import Rect, Rect_Button, Rect_Text, Text_Button
 from colors import *
 
 
@@ -31,8 +31,11 @@ class Machine:
 
 
 class HUD:
-	def __init__(self, scr):
+	def __init__(self, scr, game):
 		self.money = Rect_Text(scr, "0", 100, 50, 50, BLACK, WHITE)
+		self.save = Text_Button(scr, "SAVE", 200, 50, 50, BLACK, WHITE, resp=game.save)
+		self.load = Text_Button(scr, "LOAD", 400, 50, 50, BLACK, WHITE, resp=game.load)
+		self.buy = Text_Button(scr, "BUY", 600, 50, 50, BLACK, WHITE, resp=game.shop)
 		return
 
 	def format(self, num):
@@ -47,5 +50,8 @@ class HUD:
 	def update(self, **kwargs):
 		self.money.update_text(self.format(str(kwargs["money"])))
 		self.money.blit()
+		self.save.blit()
+		self.load.blit()
+		self.buy.blit()
 		return
 	pass

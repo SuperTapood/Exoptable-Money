@@ -1,5 +1,11 @@
 # CHANGE LOG
 
+
+## Version 0.2:
+- added save button
+- added load button
+- fixed bug with the loading function
+
 ## Version 0.1:
 - added the machine as a complex object
 - added the HUD

@@ -6,6 +6,7 @@ from time import time
 from group import Group
 from fallables import Dollar
 from pygame.mouse import get_pos
+import json
 
 
 class Game:
@@ -17,7 +18,7 @@ class Game:
 		pygame.display.set_caption("EXOPTABLE MONEY")
 		self.fill = self.scr.fill
 		self.machine = Machine(self.scr)
-		self.HUD = HUD(self.scr)
+		self.HUD = HUD(self.scr, self)
 		self.moneys = 0
 		self.values = {"dollars": 1}
 		self.constructors = {"dollars": Dollar}
@@ -81,4 +82,37 @@ class Game:
 			main_menu.blit()
 			pygame.display.update()
 		self.game()
+		return
+
+	def shop(self):
+		shop_menu = Scenes.get_shop_menu(self.scr, self.values, self.maxes)
+		while True:
+			self.fill(DARK_GREEN)
+			self.__check_exit()
+			if self.machine.active:
+				self.make_money()
+			self.clean_groups()
+			pygame.display.update()
+		return
+
+	def data_generate(self):
+		dic = {}
+		dic["moneys"] = self.moneys
+		dic["values"] = self.values
+		dic["maxes"] = self.maxes
+		return dic
+
+	def save(self):
+		with open("data.json", "w") as file:
+			json.dump(self.data_generate(), file)
+		return
+
+	def load(self):
+		try:
+			data = json.load(open("data.json", "r"))
+			for entry in data:
+				setattr(self, entry, data[entry])
+		except Exception as e:
+			pass
+		return
 	pass
