@@ -18,6 +18,7 @@
 - added version number and build state label to the main menu
 - fixed buy functions
 - updated save function
+- changed the way money moves
 
 ## Version 0.1:
 - added the machine as a complex object

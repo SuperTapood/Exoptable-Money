@@ -11,6 +11,7 @@ COMPLETED - 23/8/2020
 
 ## Add Purchasing System - Expected by SEP 2020
 A menu that will allow to upgrade the different types of the moneys (and one that will be built dynamically to allow more types to be added)
+COMPLETED - 24/8/2020
 
 
 ## Add Placeholders for the letters - Expected by OCT 2020
