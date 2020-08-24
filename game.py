@@ -1,12 +1,15 @@
 import pygame
 from scenes import Scenes
 from colors import *
-from complex import Machine, HUD
+from complex import Machine, HUD, FPS_Counter
 from time import time
 from group import Group
 from fallables import Dollar
 from pygame.mouse import get_pos
 import json
+from os import remove as delete
+from time import sleep as wait
+import inspect
 
 
 class Game:
@@ -20,15 +23,43 @@ class Game:
 		self.machine = Machine(self.scr)
 		self.HUD = HUD(self.scr, self)
 		self.moneys = 0
-		self.values = {"dollars": 1}
 		self.constructors = {"dollars": Dollar}
 		self.maxes = {"dollars": 1}
+		self.current_values = {"dollars": 1}
+		self.prices = {"dollars": [50, 100, 200]}
+		self.values = {"dollars": [2, 5, 10]}
+		self.levels = {"dollars": -1}
+		self.names = ["dollars"]
 		dollars = Group(name="dollars")
 		self.groups = [dollars]
+		self.main_menu = Scenes.get_main_menu(self.scr, self.__game_n_load, self.game, self.del_data)
+		self.shop_menu = Scenes.get_shop_menu(self)
+		self.fps_counter = FPS_Counter(self.scr)
+		return
+
+	def __game_n_load(self):
+		self.load()
+		self.game()
+		return
+
+	def show_dis(self):
+		## warn user from deleting data on accident ##
+		## TODO ##
+		pass
+
+	def del_data(self):
+		self.show_dis()
+		try:
+			delete("data.json")
+		except Exception as e:
+			pass
+		self.start()
 		return
 
 
 	def __check_exit(self):
+		# print(get_pos())
+		self.fps_counter.blit()
 		for event in pygame.event.get():
 				if event.type == pygame.QUIT:
 					exit()
@@ -45,7 +76,7 @@ class Game:
 		for top, group in zip(self.maxes, self.groups):
 			assert top == group.name
 			if group < self.maxes[top]:
-				group.append(self.get_const(top)(self.scr, self.values[top], self.machine))
+				group.append(self.get_const(top)(self.scr, self.current_values[top], self.machine))
 		return
 
 	def blit_groups(self):
@@ -54,15 +85,13 @@ class Game:
 		return
 
 	def clean_groups(self):
-		for group, value in zip(self.groups, self.values):
+		for group, value in zip(self.groups, self.current_values):
 			count = group.remove(lambda obj: obj.y > 800 or obj.y < 0, count=True)
-			self.moneys += count * self.values[value]
+			self.moneys += count * self.current_values[value]
 		return
 
 	def game(self):
 		while True:
-			start = time()
-			self.__check_exit()
 			self.fill(DARK_GREEN)
 			self.machine.blit()
 			self.update_HUD()
@@ -70,43 +99,43 @@ class Game:
 				self.make_money()
 			self.blit_groups()
 			self.clean_groups()
+			self.__check_exit()
 			pygame.display.update()
-			print(1 / (time()- start))
 		return
 
 	def start(self):
-		main_menu = Scenes.get_main_menu(self.scr, self.game)
-		# self.shop()
 		while True:
-			break
 			self.fill(DARK_GREEN)
+			self.main_menu.blit()
 			self.__check_exit()
-			main_menu.blit()
 			pygame.display.update()
-		self.game()
 		return
 
 	def shop(self):
-		shop_menu = Scenes.get_shop_menu(self)
 		while True:
-			start = time()
 			self.blit_groups()
 			self.fill(DARK_GREEN)
 			self.__check_exit()
 			if self.machine.active:
 				self.make_money()
 			self.clean_groups()
-			shop_menu.blit()
+			self.shop_menu.blit()
 			self.update_HUD()
 			pygame.display.update()
-			print(1 / (time()- start))
 		return
 
 	def data_generate(self):
 		dic = {}
-		dic["moneys"] = self.moneys
-		dic["values"] = self.values
-		dic["maxes"] = self.maxes
+		members = inspect.getmembers(self, lambda a:not(inspect.isroutine(a)))
+		exclude = ["HUD", "X", "Y", "constructors", 
+		"fps_counter", "groups", "machine",  "main_menu", "names",
+		"scr", "shop_menu"]
+		for mem in members:
+			att = mem[0]
+			value = mem[1]
+			if not att[:2] == att[-2:] == "__":
+				if att not in exclude:
+					dic[att] = value
 		return dic
 
 	def save(self):
@@ -124,11 +153,10 @@ class Game:
 		return
 
 	def buy(self, button):
-		if button.price <= self.moneys:
+		if self.moneys - button.price >= 0:
 			self.moneys -= button.price
-			if button.name == "machine":
-				self.upgrade_machine
-			else:
-				self.values[button.name] = button.reward
+			self.current_values[button.name] = self.values[button.name][button.level]
+			self.levels[button.name] += 1
+			button.update(self)
 		return
 	pass

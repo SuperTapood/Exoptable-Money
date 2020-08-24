@@ -100,11 +100,19 @@ class Text_Button:
 	def __init__(self, scr, txt, x, y, font_size, t_color, r_color, font="freesansbold.ttf", resp=lambda: None):
 		self.text = Text(scr, txt, x, y, font_size, t_color, font)
 		x, y, w, h = self.text.get_rekt()
+		self.resp = resp
 		self.Rect = Rect_Button(scr, r_color, x, y, w, h, resp)
+		self.scr = scr
+		self.r_color = r_color
 		return
 
 	def blit(self):
 		self.Rect.blit()
 		self.text.blit()
+		return
+
+	def update_text(self, new_text):
+		self.text.update_text(new_text)
+		self.Rect.rect = self.text.get_rekt()
 		return
 	pass

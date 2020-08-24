@@ -7,6 +7,17 @@
 - fixed bug with the loading function
 - added shop with ability to upgrade the cash
 - added button to return to the main screen (the one with the machine)
+- scenes will now load during the init of the game
+- repositioned title in the title screen
+- removed the money machine from the title screen
+- repositioned the recolored the resume game button and renamed it
+- added global FPS Counter
+- repositioned HUD
+- added a new game button to the main menu
+- added a delete data button (disabled until I add a disclaimer)
+- added version number and build state label to the main menu
+- fixed buy functions
+- updated save function
 
 ## Version 0.1:
 - added the machine as a complex object

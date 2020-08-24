@@ -1,5 +1,6 @@
-from objects import Rect, Rect_Button, Rect_Text, Text_Button
+from objects import Rect, Rect_Button, Rect_Text, Text_Button, Text
 from colors import *
+from time import time
 
 
 
@@ -29,14 +30,13 @@ class Machine:
 		return
 	pass
 
-
 class HUD:
 	def __init__(self, scr, game):
-		self.money = Rect_Text(scr, "0", 100, 50, 50, BLACK, WHITE)
-		self.save = Text_Button(scr, "SAVE", 200, 50, 50, BLACK, WHITE, resp=game.save)
-		self.load = Text_Button(scr, "LOAD", 400, 50, 50, BLACK, WHITE, resp=game.load)
-		self.buy = Text_Button(scr, "BUY", 600, 50, 50, BLACK, WHITE, resp=game.shop)
-		self.main = Text_Button(scr, "MAIN", 800, 50, 50, BLACK, WHITE, resp=game.game)
+		self.money = Rect_Text(scr, "0", 10, 10, 50, BLACK, WHITE)
+		self.save = Text_Button(scr, "SAVE", 700, 10, 50, BLACK, WHITE, resp=game.save)
+		self.load = Text_Button(scr, "LOAD", 900, 10, 50, BLACK, WHITE, resp=game.load)
+		self.buy = Text_Button(scr, "BUY", 700, 100, 50, BLACK, WHITE, resp=game.shop)
+		self.main = Text_Button(scr, "MAIN", 900, 100, 50, BLACK, WHITE, resp=game.game)
 		return
 
 	def format(self, num):
@@ -55,5 +55,26 @@ class HUD:
 		self.load.blit()
 		self.buy.blit()
 		self.main.blit()
+		return
+	pass
+
+class FPS_Counter:
+	def __init__(self, scr):
+		self.counter = Text(scr, "", 1140, 10, 25, WHITE)
+		self.last = time()
+		return
+
+	def __str__(self):
+		spf = time() - self.last
+		try:
+			fps = 1 / spf
+		except ZeroDivisionError:
+			fps = 1000
+		return f"{int(fps * 10) / 10} FPS"
+
+	def blit(self):
+		self.counter.update_text(str(self))
+		self.last = time()
+		self.counter.blit()
 		return
 	pass

@@ -30,8 +30,8 @@ class Group:
 	def __lt__(self, other):
 		return len(self) < other
 
-	def __gt__(self, other):
-		return len(self) > other
+	def __ne__(self, other):
+		return not self == other
 
 	@classmethod
 	def create(cls, arr):
