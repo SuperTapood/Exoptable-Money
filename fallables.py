@@ -3,7 +3,6 @@ from pygame.draw import *
 from colors import GREEN
 from time import time
 from collision import sprite_sprite_collision
-from math import cos, sqrt
 
 
 class Falling_Object:
