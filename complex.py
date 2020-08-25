@@ -1,6 +1,7 @@
 from objects import Rect, Rect_Button, Rect_Text, Text_Button, Text
 from colors import *
 from time import time
+from group import Group
 
 
 
@@ -76,5 +77,32 @@ class FPS_Counter:
 		self.counter.update_text(str(self))
 		self.last = time()
 		self.counter.blit()
+		return
+	pass
+
+
+class Dis:
+	def __init__(self, scr):
+		self.scr = scr
+		self.choices = {"yes": False, "no": False}
+		self.txt = Group()
+		self.txt.append(Text(scr, "WARNING", 50, 50, 50, WHITE))
+		self.txt.append(Text(scr, "Deleted data will not be recoverable", 50, 250, 50, WHITE))
+		self.txt.append(Text(scr, "Are you sure you want to delete the saved data?", 50, 250, 50, WHITE))
+		self.yes = Text_Button(scr, "YES", 150, 550, 100, RED, GREEN, resp=lambda: self.change_bool("yes"))
+		self.no = Text_Button(scr, "NO", 1050, 550, 100, RED, GREEN, resp=lambda: self.change_bool("no"))
+		return
+
+	def __getitem__(self, item):
+		return self.choices[item]
+
+	def change_bool(self, booly):
+		self.choices[booly] = True
+		return
+
+	def blit(self):
+		self.txt.blit()
+		self.yes.blit()
+		self.no.blit()
 		return
 	pass

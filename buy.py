@@ -1,4 +1,4 @@
-from objects import Text_Button, Rect
+from objects import Text_Button, Rect, Text
 from colors import *
 
 
@@ -23,13 +23,24 @@ def Generate_Buttons(game):
 class Buy_Button:
 	def __init__(self, *args):
 		self.game, self.name, self.price, self.value, index, self.level = args
-		self.button = Text_Button(self.game.scr, str(self.price), 150, 510, 50, WHITE, DARK_GREEN, resp=self.buy)
-		self.blit = self.button.blit
+		self.button = Text_Button(self.game.scr, str(self.price), 150 + index * 150, 510 if index < 8 else 710, 50, WHITE, DARK_GREEN, resp=self.buy)
+		self.level_button = Text(self.game.scr, f"Level {self.level}", 150 + index * 150, 560 if index < 8 else 760, 30, WHITE)
 		self.__lock = False
+		return
+
+	def blit(self):
+		self.button.blit()
+		self.level_button.blit()
+		return
+
+	def __update(self):
+		self.button.update_text(str(self.price))
+		self.level_button.update_text(f"Level {self.level}")
 		return
 
 	def lock(self):
 		self.__lock = True
+		self.price = "MAX"
 		return
 
 	def buy(self):
@@ -45,5 +56,6 @@ class Buy_Button:
 			self.value = game.values[self.name][self.level]
 			self.price = game.prices[self.name][self.level]
 			self.button.update_text(str(self.price))
+		self.__update()
 		return
 	pass

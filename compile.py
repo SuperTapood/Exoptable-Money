@@ -9,6 +9,7 @@ except Exception as e:
 	print("unless its not [WinError 2]")
 	print("then you should probably worry")
 
-	
+
+os.system(f"conda activate PYGAME")
 os.system(f"cd {os.path.dirname(__file__)}")
 os.system(f"python build.py build")

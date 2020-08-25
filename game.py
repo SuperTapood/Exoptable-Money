@@ -1,7 +1,7 @@
 import pygame
 from scenes import Scenes
 from colors import *
-from complex import Machine, HUD, FPS_Counter
+from complex import Machine, HUD, FPS_Counter, Dis
 from time import time
 from group import Group
 from fallables import Dollar
@@ -22,19 +22,21 @@ class Game:
 		self.fill = self.scr.fill
 		self.machine = Machine(self.scr)
 		self.HUD = HUD(self.scr, self)
-		self.moneys = 0
+		self.dis = Dis(self.scr)
+		self.moneys = 8654105
 		self.constructors = {"dollars": Dollar}
 		self.maxes = {"dollars": 1}
 		self.current_values = {"dollars": 1}
-		self.prices = {"dollars": [50, 100, 200]}
-		self.values = {"dollars": [2, 5, 10]}
-		self.levels = {"dollars": -1}
-		self.names = ["dollars"]
+		self.prices = {"Machine": [100, 250, 500], "dollars": [50, 100, 200]}
+		self.values = {"Machine": [None, None, None], "dollars": [2, 5, 10]}
+		self.levels = {"Machine": -1, "dollars": -1}
+		self.names = ["Machine", "dollars"]
 		dollars = Group(name="dollars")
 		self.groups = [dollars]
 		self.main_menu = Scenes.get_main_menu(self.scr, self.__game_n_load, self.game, self.del_data)
 		self.shop_menu = Scenes.get_shop_menu(self)
 		self.fps_counter = FPS_Counter(self.scr)
+		self.update = pygame.display.update
 		return
 
 	def __game_n_load(self):
@@ -43,16 +45,26 @@ class Game:
 		return
 
 	def show_dis(self):
-		## warn user from deleting data on accident ##
-		## TODO ##
-		pass
+		while True:
+			self.fill(BLACK)
+			self.__check_exit()
+			self.dis.blit()
+			if self.dis["yes"]:
+				true = True
+				break
+			if self.dis["no"]:
+				true = False
+				break
+			self.update()
+		return true
+
 
 	def del_data(self):
-		self.show_dis()
-		try:
-			delete("data.json")
-		except Exception as e:
-			pass
+		if self.show_dis():
+			try:
+				delete("data.json")
+			except Exception as e:
+				pass
 		self.start()
 		return
 
@@ -100,7 +112,7 @@ class Game:
 			self.blit_groups()
 			self.clean_groups()
 			self.__check_exit()
-			pygame.display.update()
+			self.update()
 		return
 
 	def start(self):
@@ -108,7 +120,7 @@ class Game:
 			self.fill(DARK_GREEN)
 			self.main_menu.blit()
 			self.__check_exit()
-			pygame.display.update()
+			self.update()
 		return
 
 	def shop(self):
@@ -121,42 +133,47 @@ class Game:
 			self.clean_groups()
 			self.shop_menu.blit()
 			self.update_HUD()
-			pygame.display.update()
+			self.update()
 		return
-
-	def data_generate(self):
-		dic = {}
-		members = inspect.getmembers(self, lambda a:not(inspect.isroutine(a)))
-		exclude = ["HUD", "X", "Y", "constructors", 
-		"fps_counter", "groups", "machine",  "main_menu", "names",
-		"scr", "shop_menu"]
-		for mem in members:
-			att = mem[0]
-			value = mem[1]
-			if not att[:2] == att[-2:] == "__":
-				if att not in exclude:
-					dic[att] = value
-		return dic
 
 	def save(self):
 		with open("data.json", "w") as file:
 			json.dump(self.data_generate(), file)
 		return
 
+	def data_generate(self):
+		arr = []
+		arr.append(self.moneys)
+		arr.append(self.maxes)
+		arr.append(self.current_values)
+		arr.append(self.levels)
+		return arr
+
 	def load(self):
 		try:
 			data = json.load(open("data.json", "r"))
-			for entry in data:
-				setattr(self, entry, data[entry])
+			self.moneys = data[0]
+			for key, _, _ in zip(data[1], data[2], data[3]):
+				self.maxes[key] = maxes[key]
+				self.current_values[key] = values[key]
+				self.levels[key] = levels[key]
 		except Exception as e:
 			pass
+		return
+
+	def increase_maxes(self):
+		for key in self.maxes:
+			self.maxes[key] += 1
 		return
 
 	def buy(self, button):
 		if self.moneys - button.price >= 0:
 			self.moneys -= button.price
-			self.current_values[button.name] = self.values[button.name][button.level]
 			self.levels[button.name] += 1
+			if button.name == "Machine":
+				self.increase_maxes()
+			else:
+				self.current_values[button.name] = self.values[button.name][button.level]
 			button.update(self)
 		return
 	pass

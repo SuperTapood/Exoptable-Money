@@ -1,6 +1,13 @@
 # CHANGE LOG
 
 
+## Version 0.3:
+- added level 0 for the dollars
+- added dynamic save system to make sure that saves won't break with updates
+- added money machine upgrades
+- added level label to the upgrade buttons (design will change later on)
+- optimized load function
+
 ## Version 0.2:
 - added save button
 - added load button
