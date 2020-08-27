@@ -3,20 +3,27 @@ from colors import *
 from time import time
 from group import Group
 
+## called those complex object because it sounded cool ##
 
 
+# the money machine class
+# will change to be a picture button later on
+# presumably(?) after I draw a money machine
 class Machine:
 	def __init__(self, scr):
 		self.scr = scr
 		self.box = Rect(scr, BLACK, 400, 420, 300, 300)
 		self.x, self.y, self.w, self.h = self.box.rect
 		self.handle_ext = Rect(scr, BLACK, 700, 500, 200, 50)
+		# make two different handles for the machine because I am a moron
+		# that can't use transformations
 		self.non_active_handle = Rect_Button(scr, BLACK, 900, 350, 50, 200, resp = self.click)
 		self.active_handle = Rect_Button(scr, BLACK, 900, 500, 50, 200, resp = self.click)
 		self.active = False
 		return
 
 	def click(self):
+		# haha money machine go brrrrr
 		self.active = not self.active
 		return
 
@@ -31,6 +38,8 @@ class Machine:
 		return
 	pass
 
+
+# the hud is used to convey info to the player and place buttons
 class HUD:
 	def __init__(self, scr, game):
 		self.money = Rect_Text(scr, "0", 10, 10, 50, BLACK, WHITE)
@@ -50,6 +59,7 @@ class HUD:
 		return out[::-1]
 
 	def update(self, **kwargs):
+		# I really wish there was a better way to do this
 		self.money.update_text(self.format(str(kwargs["money"])))
 		self.money.blit()
 		self.save.blit()
@@ -59,6 +69,7 @@ class HUD:
 		return
 	pass
 
+# FPS counter that will be disabled later on
 class FPS_Counter:
 	def __init__(self, scr):
 		self.counter = Text(scr, "", 1140, 10, 25, WHITE)
@@ -66,6 +77,8 @@ class FPS_Counter:
 		return
 
 	def __str__(self):
+		# spf stands for seconds-per-frame
+		# i use it because FPS can sometime not play nice
 		spf = time() - self.last
 		try:
 			fps = 1 / spf
@@ -81,6 +94,8 @@ class FPS_Counter:
 	pass
 
 
+# this exists
+# why? idk
 class Dis:
 	def __init__(self, scr):
 		self.scr = scr

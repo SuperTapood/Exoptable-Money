@@ -5,6 +5,8 @@ from time import time
 from collision import sprite_sprite_collision
 from math import sin, cos, sqrt
 
+
+# this has a lot of code so I will be able to add new objects more easily
 class Falling_Object:
 	def __init__(self, scr, value, machine):
 		self.value = value
@@ -43,7 +45,7 @@ class Falling_Object:
 	def fall(self):
 		# temp function, will later replace with an actual physics engine
 		# god what did i get myself into
-		# | below is a surprise tool that will help us later |
+		# | this is a surprise tool that will help us later |
 		# V                                                  V
 		# if not self.up:
 		# 	self.y += self.g * (time() - self.last)

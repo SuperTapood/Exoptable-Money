@@ -5,6 +5,8 @@ import pygame
 from colors import *
 from buy import Generate_Buttons
 
+
+# class that returns builds and returns Groups
 class Scenes:
 	def get_main_menu(scr, resp, resp2, resp3):
 		objs = Group()
@@ -21,4 +23,5 @@ class Scenes:
 		return objs
 
 	def get_shop_menu(game):
+		# why call a one line function?
 		return Group.create(Generate_Buttons(game))

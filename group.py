@@ -1,3 +1,7 @@
+
+# so many useless function
+# just so many useless functions
+
 class Group:
 	def __init__(self, name=""):
 		self.__objects = []
@@ -33,6 +37,8 @@ class Group:
 	def __ne__(self, other):
 		return not self == other
 
+	# this is my favorite function
+	# don't tell __repr__
 	@classmethod
 	def create(cls, arr):
 		group = Group()

@@ -12,9 +12,14 @@ from time import sleep as wait
 import inspect
 
 
+# *slaps class*
+# this bad boy can fit so many damn attributes in it
+# lol __slots__ will be a nightmare to implement lmao
+
 class Game:
 	def __init__(self):
 		pygame.init()
+		# screen isn't 1080p because development is easier with 720p
 		self.X = 1280
 		self.Y = 720
 		self.scr = pygame.display.set_mode((self.X, self.Y))
@@ -82,9 +87,11 @@ class Game:
 		return
 
 	def get_const(self, name):
+		# this is stupid, could use __getitem__ instead but this is more intuitive(?)
 		return self.constructors[name]
 
 	def make_money(self):
+		# fill all of the money groups
 		for top, group in zip(self.maxes, self.groups):
 			assert top == group.name
 			if group < self.maxes[top]:
@@ -97,6 +104,7 @@ class Game:
 		return
 
 	def clean_groups(self):
+		# remove objects that are no longer on screen and add moneys to player
 		for group, value in zip(self.groups, self.current_values):
 			count = group.remove(lambda obj: obj.y > 800 or obj.y < 0, count=True)
 			self.moneys += count * self.current_values[value]
@@ -141,6 +149,7 @@ class Game:
 			json.dump(self.data_generate(), file)
 		return
 
+
 	def data_generate(self):
 		arr = []
 		arr.append(self.moneys)
@@ -150,6 +159,7 @@ class Game:
 		return arr
 
 	def load(self):
+		# my patent-pending brilliant loading function
 		try:
 			data = json.load(open("data.json", "r"))
 			self.moneys = data[0]

@@ -3,6 +3,9 @@ from pygame.mouse import get_pressed, get_pos
 from time import time
 import pygame
 
+
+# some mindless object templates
+
 class Rect:
 	def __init__(self, scr, color, x, y, w, h, width=0):
 		self.scr = scr
