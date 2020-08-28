@@ -8,7 +8,7 @@ from group import Group
 
 # the money machine class
 # will change to be a picture button later on
-# presumably(?) after I draw a money machine
+# prbbly after I draw a money machine
 class Machine:
 	def __init__(self, scr):
 		self.scr = scr
@@ -49,17 +49,22 @@ class HUD:
 		self.main = Text_Button(scr, "MAIN", 900, 100, 50, BLACK, WHITE, resp=game.game)
 		return
 
+
+	# format the money value to look a bit nicer
 	def format(self, num):
 		out = ""
+		# imma need to reverse the number in order to correctly place the ","
 		num = num[::-1]
 		for i, digit in enumerate(num):
 			if i % 3 == 0 and i > 0:
 				out += ","
 			out += digit
+		# reverse the number back so it makes sense
 		return out[::-1]
 
 	def update(self, **kwargs):
 		# I really wish there was a better way to do this
+		# nah for loops would be worse
 		self.money.update_text(self.format(str(kwargs["money"])))
 		self.money.blit()
 		self.save.blit()
@@ -70,6 +75,7 @@ class HUD:
 	pass
 
 # FPS counter that will be disabled later on
+# mere cosmetic
 class FPS_Counter:
 	def __init__(self, scr):
 		self.counter = Text(scr, "", 1140, 10, 25, WHITE)

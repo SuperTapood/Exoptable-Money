@@ -6,7 +6,7 @@ from colors import *
 def Generate_Buttons(game):
 	# dynamically generate all the buy button you can ever think of, BABEE
 	# a bit of a headache but it runs once per initiation and saves me from writing
-	# a button of code
+	# a butt load of code
 	scr = game.scr
 	prices = game.prices
 	values = game.values

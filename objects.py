@@ -18,6 +18,9 @@ class Rect:
 		rect(self.scr, self.color, self.rect, self.width)
 		return
 	pass
+
+
+
 class Button:
 	last_click = time()
 
@@ -34,6 +37,10 @@ class Button:
 			self.last_click = time()
 			self.resp()
 		return
+	pass
+
+
+
 class Rect_Button(Button):
 	def __init__(self, scr, color, x, y, w, h, resp=lambda:None, width=0, delay_time=0.3):
 		self.scr = scr
@@ -48,6 +55,9 @@ class Rect_Button(Button):
 		super().blit()
 		return
 	pass
+
+
+
 class Text:
 	def __init__(self, scr, txt, x, y, font_size, color, font="freesansbold.ttf"):
 		self.scr = scr
@@ -79,6 +89,10 @@ class Text:
 		self.rect = self.text.get_rect()
 		self.rect.topleft = (self.x, self.y)
 		return
+	pass
+
+
+
 class Rect_Text:
 	def __init__(self, scr, txt, t_x, t_y, size, t_color, r_color):
 		self.text = Text(scr, txt, t_x, t_y, size, t_color)
@@ -99,6 +113,9 @@ class Rect_Text:
 		self.rect = Rect(self.scr, self.r_color, x, y , w, h)
 		return
 	pass
+
+
+
 class Text_Button:
 	def __init__(self, scr, txt, x, y, font_size, t_color, r_color, font="freesansbold.ttf", resp=lambda: None):
 		self.text = Text(scr, txt, x, y, font_size, t_color, font)

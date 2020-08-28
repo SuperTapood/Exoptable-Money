@@ -45,7 +45,8 @@ class Falling_Object:
 	def fall(self):
 		# temp function, will later replace with an actual physics engine
 		# god what did i get myself into
-		# | this is a surprise tool that will help us later |
+		#
+		# | this is a surprise tool that will help us later! |
 		# V                                                  V
 		# if not self.up:
 		# 	self.y += self.g * (time() - self.last)
@@ -63,6 +64,7 @@ class Falling_Object:
 			self.y -= 1 / self.t
 			self.x += self.ratio / self.t
 		return
+	pass
 
 
 class Dollar(Falling_Object):

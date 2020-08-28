@@ -13,13 +13,13 @@ import inspect
 
 
 # *slaps class*
-# this bad boy can fit so many damn attributes in it
+# this bad boy can fit so many goddamn attributes in it
 # lol __slots__ will be a nightmare to implement lmao
 
 class Game:
 	def __init__(self):
 		pygame.init()
-		# screen isn't 1080p because development is easier with 720p
+		# screen isn't 1080p because development is easier with 720p because it doesn't fill up my screen
 		self.X = 1280
 		self.Y = 720
 		self.scr = pygame.display.set_mode((self.X, self.Y))
