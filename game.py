@@ -151,6 +151,7 @@ class Game:
 
 
 	def data_generate(self):
+		# generate the save data I need
 		arr = []
 		arr.append(self.moneys)
 		arr.append(self.maxes)
@@ -177,6 +178,7 @@ class Game:
 		return
 
 	def buy(self, button):
+		# a few logic rules for the buying process
 		if self.moneys - button.price >= 0:
 			self.moneys -= button.price
 			self.levels[button.name] += 1

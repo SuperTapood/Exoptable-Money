@@ -18,10 +18,15 @@ class Scenes:
 		# objs.append(Rect(scr, BLACK, 900, 500, 50, 200))
 		objs.append(Text_Button(scr, "Resume Thy Journey", 50, 250, 50, WHITE, DARK_GREEN, resp=resp))
 		objs.append(Text_Button(scr, "Start Thy Journey Anew", 50, 350, 50, WHITE, DARK_GREEN, resp=resp2))
-		# delete function has been disabled for now
 		objs.append(Text_Button(scr, "Delete All Thy Data", 50, 450, 50, WHITE, DARK_GREEN, resp=resp3))
 		return objs
 
 	def get_shop_menu(game):
-		# why call a one line function?
+		# this is basically what this function does
+		# objs = Group()
+		# buttons = Generate_Buttons()
+		# for button in buttons:
+		# 	objs.append(button)
+		# return objs
+		# Group.create creates a Group object and auto appends a list into it
 		return Group.create(Generate_Buttons(game))

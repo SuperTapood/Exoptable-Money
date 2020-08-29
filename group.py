@@ -38,7 +38,7 @@ class Group:
 		return not self == other
 
 	# this is my favorite function
-	# don't tell __repr__
+	# please don't tell __repr__
 	@classmethod
 	def create(cls, arr):
 		group = Group()
@@ -59,7 +59,7 @@ class Group:
 		return
 
 	def is_empty(self):
-		return self.__objects == []
+		return len(self) == 0
 
 	def remove(self, func, count=False):
 		coun = 0
