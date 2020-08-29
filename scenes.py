@@ -11,7 +11,7 @@ class Scenes:
 	def get_main_menu(scr, resp, resp2, resp3):
 		objs = Group()
 		objs.append(Text(scr, "Exoptable Money", 200, 20, 100, WHITE))
-		objs.append(Text(scr, "Pre-Alpha Build - Ver 0.3", 1040, 700, 20, WHITE))
+		objs.append(Text(scr, "Pre-Alpha Build - Ver 0.4", 1040, 700, 20, WHITE))
 		# the money machine:
 		# objs.append(Rect(scr, BLACK, 400, 420, 300, 300))
 		# objs.append(Rect(scr, BLACK, 700, 500, 200, 50))

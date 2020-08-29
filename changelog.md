@@ -1,5 +1,10 @@
 # CHANGE LOG
 
+## Version 0.4:
+- game will no longer blit objects before they have a value
+- added coins
+- "added" letters
+- further development is on hold due until I make new assets
 
 ## Version 0.3:
 - added level 0 for the dollars

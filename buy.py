@@ -40,7 +40,7 @@ class Buy_Button:
 	def __update(self):
 		# update the text
 		self.button.update_text(str(self.price))
-		self.level_button.update_text(f"Level {self.level}")
+		self.level_button.update_text(f"Level {self.level + 1}")
 		return
 
 	def lock(self):

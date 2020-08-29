@@ -76,3 +76,11 @@ class Dollar(Falling_Object):
 		self.fall()
 		return
 	pass
+
+class Coin(Falling_Object):
+	w = h = 20
+
+	def blit(self):
+		circle(self.scr, GREEN, (int(self.x), int(self.y)), self.w)
+		self.fall()
+		return

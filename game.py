@@ -4,12 +4,13 @@ from colors import *
 from complex import Machine, HUD, FPS_Counter, Dis
 from time import time
 from group import Group
-from fallables import Dollar
+from fallables import Dollar, Coin
 from pygame.mouse import get_pos
 import json
 from os import remove as delete
 from time import sleep as wait
 import inspect
+from letters import Letter_Placeholder, Letters
 
 
 # *slaps class*
@@ -29,19 +30,23 @@ class Game:
 		self.HUD = HUD(self.scr, self)
 		self.dis = Dis(self.scr)
 		self.moneys = 8654105
-		self.constructors = {"dollars": Dollar}
-		self.maxes = {"dollars": 1}
-		self.current_values = {"dollars": 1}
-		self.prices = {"Machine": [100, 250, 500], "dollars": [50, 100, 200]}
-		self.values = {"Machine": [None, None, None], "dollars": [2, 5, 10]}
-		self.levels = {"Machine": -1, "dollars": -1}
-		self.names = ["Machine", "dollars"]
+		self.constructors = {"dollars": Dollar, "coins": Coin}
+		self.maxes = {"dollars": 1, "coins": 1}
+		self.current_values = {"dollars": 1, "coins": 0}
+		self.prices = {"Machine": [100, 250, 500], "dollars": [50, 100, 200], "coins": [200, 500, 1000]}
+		self.values = {"Machine": [None, None, None], "dollars": [2, 5, 10], "coins": [5, 10, 20]}
+		self.levels = {"Machine": -1, "dollars": -1, "coins": -1}
+		self.names = ["Machine", "dollars", "coins"]
 		dollars = Group(name="dollars")
-		self.groups = [dollars]
+		coins = Group(name="coins")
+		self.groups = [dollars, coins]
+		self.thresholds = {100: False}
 		self.main_menu = Scenes.get_main_menu(self.scr, self.__game_n_load, self.game, self.del_data)
 		self.shop_menu = Scenes.get_shop_menu(self)
 		self.fps_counter = FPS_Counter(self.scr)
 		self.update = pygame.display.update
+		self.letters = Letters(self.scr, self.thresholds)
+		self.active_letter = Letter_Placeholder()
 		return
 
 	def __game_n_load(self):
@@ -92,7 +97,9 @@ class Game:
 
 	def make_money(self):
 		# fill all of the money groups
-		for top, group in zip(self.maxes, self.groups):
+		for top, group, value_key in zip(self.maxes, self.groups, self.current_values):
+			if self.current_values[value_key] == 0:
+				continue
 			assert top == group.name
 			if group < self.maxes[top]:
 				group.append(self.get_const(top)(self.scr, self.current_values[top], self.machine))
@@ -110,6 +117,12 @@ class Game:
 			self.moneys += count * self.current_values[value]
 		return
 
+	def check_inbox(self):
+		for key in self.thresholds:
+			if not self.thresholds[key] and self.moneys >= key:
+				self.active_letter = self.letters[key]
+		return
+
 	def game(self):
 		while True:
 			self.fill(DARK_GREEN)
@@ -119,6 +132,8 @@ class Game:
 				self.make_money()
 			self.blit_groups()
 			self.clean_groups()
+			self.check_inbox()
+			self.active_letter.blit()
 			self.__check_exit()
 			self.update()
 		return
