@@ -2,7 +2,8 @@
 
 
 # THE PROJECT IS ON HOLD (as of 29/08/2020) UNTIL I DRAW NEW ASSETS THAT WILL BE USED
-# DEVELOPMENT WILL PROBABLY COMMENCE AGAIN SOMEWHERE IN SEPTEMBER-OCTOBER
+# DEVELOPMENT WILL PROBABLY COMMENCE AGAIN SOMEWHERE IN SEPTEMBER
+
 
 
 # ROADMAP:
@@ -38,7 +39,7 @@ A letter placeholder will appear every time a letter should appear
 New ways to get money will be unlocked via progress rather then being unlocked from the beginning (kind of cash cap)
 
 
-## Add Madam Sinclaire's Letters - Expected by JAN 2021
+## Add Madam Sinclair's Letters - Expected by JAN 2021
 
 
 ## Add Doctor MoneyBags' Letters - Expected by FEB 2021
