@@ -5,6 +5,7 @@
 - added coins
 - "added" letters
 - further development is on hold due until I make new assets
+- added a sprite manager to handle the sprites
 
 ## Version 0.3:
 - added level 0 for the dollars
