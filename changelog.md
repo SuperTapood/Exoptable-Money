@@ -6,6 +6,8 @@
 - "added" letters
 - further development is on hold due until I make new assets
 - added a sprite manager to handle the sprites
+- fixed a dumb bug in the data loading function
+- shortened loading function using the walrus operator
 
 ## Version 0.3:
 - added level 0 for the dollars

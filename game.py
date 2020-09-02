@@ -179,12 +179,12 @@ class Game:
 		try:
 			data = json.load(open("data.json", "r"))
 			self.moneys = data[0]
-			for key, _, _ in zip(data[1], data[2], data[3]):
+			for key, _, _ in zip(maxes := data[1], values := data[2], levels := data[3]):
 				self.maxes[key] = maxes[key]
 				self.current_values[key] = values[key]
 				self.levels[key] = levels[key]
 		except Exception as e:
-			pass
+			print(e)
 		return
 
 	def increase_maxes(self):
