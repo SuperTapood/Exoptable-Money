@@ -12,8 +12,8 @@ except Exception as e:
 
 
 # activate my venv (PYGAME)
-os.system(f"conda activate PYGAME")
+os.system(f"activate PYGAME")
 # direct the cmd to this dir
 os.system(f"cd {os.path.dirname(__file__)}")
 # run the compiling script
-os.system(f"python build.py build")
+os.system(f"python setUp.py build")

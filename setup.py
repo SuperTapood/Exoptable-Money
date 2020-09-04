@@ -2,7 +2,7 @@ import cx_Freeze
 
 OPTIONS = {"build_exe": {"packages": ["pygame"],
                          "include_files": ["build.py", "buy.py", "collision.py",
-                                           "colors.py", "compile.py", "complex.py",
+                                           "colors.py", "complex.py",
                                            "fallables.py", "game.py", "group.py",
                                            "letters.py", "objects.py", "scenes.py"]}}
 EXECUTABLES = [cx_Freeze.Executable("main.py")]
