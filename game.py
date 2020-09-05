@@ -11,22 +11,58 @@ from os import remove as delete
 from time import sleep as wait
 import inspect
 from letters import Letter_Placeholder, Letters
+from sprite_manager import get_sprites
 
 
 # *slaps class*
-# this bad boy can fit so many goddamn attributes in it
-# lol __slots__ will be a nightmare to implement lmao
+# these bad boys can fit so many goddamn attributes in them
+# __slots__ will be such a nightmare to implement lmao
 
-class Game:
+class Game_Type:
 	def __init__(self):
 		pygame.init()
-		# screen isn't 1080p because development is easier with 720p because it doesn't fill up my screen
 		self.X = 1280
 		self.Y = 720
 		self.scr = pygame.display.set_mode((self.X, self.Y))
 		pygame.display.set_caption("EXOPTABLE MONEY")
 		self.fill = self.scr.fill
-		self.machine = Machine(self.scr)
+		self.fps_counter = FPS_Counter(self.scr)
+		self.update = pygame.display.update
+		return
+
+	def check_exit(self):
+		# print(get_pos())
+		self.fps_counter.blit()
+		for event in pygame.event.get():
+				if event.type == pygame.QUIT:
+					exit()
+		return
+
+class Game(Game_Type):
+	def __init__(self):
+		super().__init__()
+		self.menu = Scenes.get_games_menu(self)
+		self.money = Money()
+		return
+
+	def start(self):
+		while True:
+			self.fill(BLACK)
+			self.check_exit()
+			self.menu.blit()
+			self.update()
+		return
+
+	def blit_money(self):
+		self.money.start()
+		return
+	pass
+
+class Money(Game_Type):
+	def __init__(self):
+		super().__init__()
+		sprites = get_sprites()
+		self.machine = Machine(self.scr, sprites)
 		self.HUD = HUD(self.scr, self)
 		self.dis = Dis(self.scr)
 		self.moneys = 8654105
@@ -41,11 +77,9 @@ class Game:
 		coins = Group(name="coins")
 		self.groups = [dollars, coins]
 		self.thresholds = {100: False}
-		self.main_menu = Scenes.get_main_menu(self.scr, self.__game_n_load, self.game, self.del_data)
-		self.shop_menu = Scenes.get_shop_menu(self)
-		self.fps_counter = FPS_Counter(self.scr)
-		self.update = pygame.display.update
-		self.letters = Letters(self.scr, self.thresholds)
+		self.main_menu = Scenes.get_money_main(self.scr, self.__game_n_load, self.game, self.del_data)
+		self.shop_menu = Scenes.get_money_shop(self)
+		self.letters = Letters(self, self.scr, self.thresholds, sprites)
 		self.active_letter = Letter_Placeholder()
 		return
 
@@ -57,7 +91,7 @@ class Game:
 	def show_dis(self):
 		while True:
 			self.fill(BLACK)
-			self.__check_exit()
+			self.check_exit()
 			self.dis.blit()
 			if self.dis["yes"]:
 				true = True
@@ -76,15 +110,6 @@ class Game:
 			except Exception as e:
 				pass
 		self.start()
-		return
-
-
-	def __check_exit(self):
-		# print(get_pos())
-		self.fps_counter.blit()
-		for event in pygame.event.get():
-				if event.type == pygame.QUIT:
-					exit()
 		return
 
 	def update_HUD(self):
@@ -120,7 +145,7 @@ class Game:
 	def check_inbox(self):
 		for key in self.thresholds:
 			if not self.thresholds[key] and self.moneys >= key:
-				self.active_letter = self.letters[key]
+				self.active_letter = self.letters[key].reset()
 		return
 
 	def game(self):
@@ -132,9 +157,10 @@ class Game:
 				self.make_money()
 			self.blit_groups()
 			self.clean_groups()
-			self.check_inbox()
+			if type(self.active_letter) == Letter_Placeholder:
+				self.check_inbox()
 			self.active_letter.blit()
-			self.__check_exit()
+			self.check_exit()
 			self.update()
 		return
 
@@ -142,7 +168,7 @@ class Game:
 		while True:
 			self.fill(DARK_GREEN)
 			self.main_menu.blit()
-			self.__check_exit()
+			self.check_exit()
 			self.update()
 		return
 
@@ -150,7 +176,7 @@ class Game:
 		while True:
 			self.blit_groups()
 			self.fill(DARK_GREEN)
-			self.__check_exit()
+			self.check_exit()
 			if self.machine.active:
 				self.make_money()
 			self.clean_groups()

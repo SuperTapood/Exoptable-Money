@@ -1,4 +1,4 @@
-from objects import Rect, Rect_Button, Rect_Text, Text_Button, Text
+from objects import Rect, Rect_Button, Rect_Text, Text_Button, Text, Image, Image_Button
 from colors import *
 from time import time
 from group import Group
@@ -10,31 +10,35 @@ from group import Group
 # will change to be a picture button later on
 # prbbly after I draw a money machine
 class Machine:
-	def __init__(self, scr):
+	def __init__(self, scr, sprites):
 		self.scr = scr
-		self.box = Rect(scr, BLACK, 400, 420, 300, 300)
-		self.x, self.y, self.w, self.h = self.box.rect
-		self.handle_ext = Rect(scr, BLACK, 700, 500, 200, 50)
+		box = sprites["machine_base"]
+		self.box = Image(scr, box, 400, 350)
+		self.x, self.y, self.w, self.h = self.box.get_rekt()
 		# make two different handles for the machine because I am a moron
 		# that can't use transformations
-		self.non_active_handle = Rect_Button(scr, BLACK, 900, 350, 50, 200, resp = self.click)
-		self.active_handle = Rect_Button(scr, BLACK, 900, 500, 50, 200, resp = self.click)
+		handle = sprites["handle_idle"]
+		self.non_active_handle = Image_Button(scr, handle, 700, 500, self.click)
+		handle = sprites["handle_active"]
+		self.active_handle = Image_Button(scr, handle, 700, 370, self.click)
 		self.active = False
 		return
 
 	def click(self):
 		# haha money machine go brrrrr
 		self.active = not self.active
+		# reset both handles bc they are the same button
+		self.active_handle.last_click = time()
+		self.non_active_handle.last_click = time()
 		return
 
 	def blit(self):
 		if self.active:
-			handle = self.non_active_handle
-		else:
 			handle = self.active_handle
-		self.box.blit()
-		self.handle_ext.blit()
+		elif self.active == False:
+			handle = self.non_active_handle
 		handle.blit()
+		self.box.blit()
 		return
 	pass
 
@@ -47,6 +51,7 @@ class HUD:
 		self.load = Text_Button(scr, "LOAD", 900, 10, 50, BLACK, WHITE, resp=game.load)
 		self.buy = Text_Button(scr, "BUY", 700, 100, 50, BLACK, WHITE, resp=game.shop)
 		self.main = Text_Button(scr, "MAIN", 900, 100, 50, BLACK, WHITE, resp=game.game)
+		self.moneys = 0
 		return
 
 
@@ -65,7 +70,9 @@ class HUD:
 	def update(self, **kwargs):
 		# I really wish there was a better way to do this
 		# nah for loops would be worse
-		self.money.update_text(self.format(str(kwargs["money"])))
+		if self.moneys != str(kwargs["money"]):
+			self.moneys = str(kwargs["money"])
+			self.money.update_text(self.format(str(kwargs["money"])))
 		self.money.blit()
 		self.save.blit()
 		self.load.blit()

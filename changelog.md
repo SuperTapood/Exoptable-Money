@@ -1,5 +1,20 @@
 # CHANGE LOG
 
+
+## Version 0.5:
+- added main main menu to hold all of the collection games
+- updated the money machine's body
+- updated the two money machine handles
+- updated the small letter
+- animated the small letter
+- clicking the small letter icon will now make it disapear (this is for later)
+- small letter animation is no longer dependent on the frame rate
+- fixed issue where the small letter animation would get stopped because of faulty logic
+- game will no longer check for letters when there is one already
+- all text buttons will now have a little larger rect
+- HUD will no longer update the money count if it is the same
+- money count's rect has been enlarged to look better
+
 ## Version 0.4:
 - game will no longer blit objects before they have a value
 - added coins

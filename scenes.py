@@ -2,16 +2,15 @@ from objects import *
 from complex import *
 from group import Group
 import pygame
-from colors import *
+from colors import BLACK, WHITE, DARK_GREEN, RED
 from buy import Generate_Buttons
 
 
 # class that returns builds and returns Groups
 class Scenes:
-	def get_main_menu(scr, resp, resp2, resp3):
+	def get_money_main(scr, resp, resp2, resp3):
 		objs = Group()
 		objs.append(Text(scr, "Exoptable Money", 200, 20, 100, WHITE))
-		objs.append(Text(scr, "Pre-Alpha Build - First Playable", 970, 700, 20, WHITE))
 		# the money machine:
 		# objs.append(Rect(scr, BLACK, 400, 420, 300, 300))
 		# objs.append(Rect(scr, BLACK, 700, 500, 200, 50))
@@ -21,7 +20,7 @@ class Scenes:
 		objs.append(Text_Button(scr, "Delete All Thy Data", 50, 450, 50, WHITE, DARK_GREEN, resp=resp3))
 		return objs
 
-	def get_shop_menu(game):
+	def get_money_shop(game):
 		# this is basically what this function does
 		# objs = Group()
 		# buttons = Generate_Buttons()
@@ -30,3 +29,15 @@ class Scenes:
 		# return objs
 		# Group.create creates a Group object and auto appends a list into it
 		return Group.create(Generate_Buttons(game))
+
+	def get_games_menu(game):
+		scr = game.scr
+		menu = Group()
+		menu.append(Text(scr, "THE MENAGERIE COLLECTION REMAKE", 50, 50, 50, WHITE))
+		menu.append(Text_Button(scr, "Exoptable Money", 100, 200, 50, DARK_GREEN, BLACK, resp=game.blit_money))
+		menu.append(Text_Button(scr, "???????????????", 100, 300, 50, RED, BLACK, resp=lambda:None))
+		menu.append(Text_Button(scr, "???????????????", 100, 400, 50, RED, BLACK, resp=lambda:None))
+		menu.append(Text_Button(scr, "???????????????", 100, 500, 50, RED, BLACK, resp=lambda:None))
+		menu.append(Text(scr, "Version 0.5", 1100, 670, 30, WHITE))
+		return menu
+
