@@ -1,6 +1,9 @@
 # Exoptable-Money
 
 
+## TODO ## 
+create a way for the loading function to load in buy buttons states 
+
 # ROADMAP:
 
 ## Create Physics Engine - Expected by SEP 2020

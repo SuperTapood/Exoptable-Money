@@ -131,6 +131,7 @@ class Text_Button:
         self.Rect = Rect_Button(scr, r_color, x, y, w, h, resp)
         self.scr = scr
         self.r_color = r_color
+        self.scale = scale
         return
 
     def blit(self):
