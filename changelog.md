@@ -1,6 +1,21 @@
 # CHANGE LOG
 
 
+## Version 0.6:
+- fixed bug where the machine buying button won't load
+- added settings menu
+- added a button to remove the FPS counter
+- settings will now update every change instead of every frame
+- fixed issue where the game will break when starting the money machine
+- added new dollar design
+- added new coin design
+- fixed inconsistent clicking on the letter
+- added an example letter (by ms)
+- added a little animation for the letter
+- fixed issue with overlaping text in the data delete dialouge
+- added go back button to the settings menu
+
+
 ## Version 0.5:
 - added main main menu to hold all of the collection games
 - updated the money machine's body
