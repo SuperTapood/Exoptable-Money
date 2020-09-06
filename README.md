@@ -1,8 +1,6 @@
 # Exoptable-Money
 
-
-## TODO ## 
-create a way for the loading function to load in buy buttons states 
+PROJECT IS NOW IN ALPHA! 
 
 # ROADMAP:
 
