@@ -18,7 +18,6 @@ def Generate_Buttons(game):
 		current_prices = prices[name]
 		current_values = values[name]
 		current_level = levels[name]
-		print(current_level)
 		price = current_prices[current_level + 1]
 		value = current_values[current_level + 1]
 		out.append(Buy_Button(game, name, price, value, i, current_level + 1))

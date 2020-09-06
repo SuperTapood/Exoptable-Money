@@ -6,48 +6,44 @@ create a way for the loading function to load in buy buttons states
 
 # ROADMAP:
 
-## Create Physics Engine - Expected by SEP 2020
+## Create Physics Engine
 A basic engine that will include the money machine, the physics (thingys go bouncy), 
 and dollars incl save and load buttons\
-COMPLETED - 23/8/2020
 
 
-## Add Purchasing System - Expected by SEP 2020
+## Add Purchasing System
 A menu that will allow to upgrade the different types of the moneys (and one that will be built dynamically to allow more types to be added)
-COMPLETED - 24/8/2020
 
 
-## Add Placeholders for the letters - Expected by OCT 2020
+## Add Placeholders for the letters
 A letter placeholder will appear every time a letter should appear
 
 
-## Add Coins - Expected by OCT 2020
+## Add Coins
 
 
-## Add Gems - Expected by NOV 2020
+## Add Gems
 
 
-## Add Cat Fur  - Expected by NOV 2020
+## Add Cat Fur
 
 
-## Add Organs  - Expected by NOV 2020
+## Add Organs
 
 
-## Add Barriers for the moneys - Expected by DEC 2020
+## Add Barriers for the moneys
 New ways to get money will be unlocked via progress rather then being unlocked from the beginning (kind of cash cap)
 
 
-## Add Madam Sinclair's Letters - Expected by JAN 2021
+## Add Madam Sinclair's Letters
 
 
-## Add Doctor MoneyBags' Letters - Expected by FEB 2021
+## Add Doctor MoneyBags' Letters
 
 
-## Seperate the game to Story Mode and Sandbox Mode - Expected by MAR 2020
+## Seperate the game to Story Mode and Sandbox Mode
 Just a simple update to include an infinite mode to the game (for some reason)
 
-## Remake all models and make them pretty - Expected by APR 2021
 
-
-## COMPILE AND LAUNCH - Expected by APR 2021
+## COMPILE AND LAUNCH
 slight optimizations (mainly __slots__), removing uncesseray code and some bug fixes
