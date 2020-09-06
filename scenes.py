@@ -40,7 +40,7 @@ class Scenes:
 		menu.append(Text_Button(scr, "???????????????", 100, 400, 50, RED, BLACK, resp=lambda:None))
 		menu.append(Text_Button(scr, "???????????????", 100, 500, 50, RED, BLACK, resp=lambda:None))
 		menu.append(Text_Button(scr, "Settings", 110, 600, 50, GREEN, BLACK, resp=game.blit_settings))
-		menu.append(Text(scr, "Version 0.6", 1100, 670, 30, WHITE))
+		menu.append(Text(scr, "Alpha Build - Version 0.6", 900, 670, 30, RED))
 		return menu
 
 
