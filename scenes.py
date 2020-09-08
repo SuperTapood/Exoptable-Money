@@ -36,9 +36,9 @@ class Scenes:
 		menu = Group()
 		menu.append(Text(scr, "THE MENAGERIE COLLECTION REMAKE", 50, 50, 50, WHITE))
 		menu.append(Text_Button(scr, "Exoptable Money", 100, 200, 50, DARK_GREEN, BLACK, resp=game.blit_money))
-		menu.append(Text_Button(scr, "???????????????", 100, 300, 50, RED, BLACK, resp=lambda:None))
-		menu.append(Text_Button(scr, "???????????????", 100, 400, 50, RED, BLACK, resp=lambda:None))
-		menu.append(Text_Button(scr, "???????????????", 100, 500, 50, RED, BLACK, resp=lambda:None))
+		menu.append(Text_Button(scr, "Presentable Liberty", 100, 300, 50, RED, BLACK, resp=lambda:None))
+		menu.append(Text_Button(scr, "Substantial Archives", 100, 400, 50, RED, BLACK, resp=lambda:None))
+		menu.append(Text_Button(scr, "Inexorable Fate", 100, 500, 50, RED, BLACK, resp=lambda:None))
 		menu.append(Text_Button(scr, "Settings", 110, 600, 50, GREEN, BLACK, resp=game.blit_settings))
 		menu.append(Text(scr, "Alpha Build - Version 0.6", 900, 670, 30, RED))
 		return menu
