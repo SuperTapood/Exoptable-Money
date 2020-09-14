@@ -8,6 +8,7 @@ TODO:
 - animate cat
 - draw buy button placeholder
 - program buy button placeholder
+- add in the detail fairy
 - animate and program in the cat
 - add all of the sprites for the letters (text and letter placeholder)
 - add in the different letters and letter thresholds
