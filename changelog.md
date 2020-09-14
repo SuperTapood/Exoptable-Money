@@ -1,5 +1,9 @@
 # CHANGE LOG
 
+## Version 0.7:
+- added credits
+- moved the game blitting system to a director based one (should improve performance but tbh idrk) 
+
 
 ## Version 0.6:
 - fixed bug where the machine buying button won't load

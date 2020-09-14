@@ -1,7 +1,6 @@
 from objects import *
 from complex import *
 from group import Group
-import pygame
 from colors import BLACK, WHITE, DARK_GREEN, RED, GREEN
 from buy import Generate_Buttons
 from setting import Setting
@@ -40,7 +39,7 @@ class Scenes:
 		menu.append(Text_Button(scr, "Substantial Archives", 100, 400, 50, RED, BLACK, resp=lambda:None))
 		menu.append(Text_Button(scr, "Inexorable Fate", 100, 500, 50, RED, BLACK, resp=lambda:None))
 		menu.append(Text_Button(scr, "Settings", 110, 600, 50, GREEN, BLACK, resp=game.blit_settings))
-		menu.append(Text(scr, "Alpha Build - Version 0.6", 900, 670, 30, RED))
+		menu.append(Text(scr, "Alpha Build - Version 0.7", 900, 670, 30, RED))
 		return menu
 
 
@@ -55,6 +54,16 @@ class Scenes:
 		out = Group()
 		scr = game.scr
 		out.append(Text(scr, "Settings", 500, 0, 70, WHITE))
+		out.append(Text_Button(scr, "Go Back", 500, 650, 50, BLACK, WHITE, resp=game.start, scale=1.3))
+		out.append(Text_Button(scr, "Credits", 1050, 650, 50, BLACK, WHITE, resp=game.blit_credits, scale=1.3))
+		return out
+
+	def get_credits(game):
+		out = Group()
+		scr = game.scr
+		out.append(Text(scr, "Credits", 500, 20, 70, WHITE))
+		out.append(Text(scr, "Wertpol - The OC", 50, 100, 40, WHITE))
+		out.append(Text(scr, "master1203 - Cat Stock Image", 50, 150, 40, WHITE))
 		out.append(Text_Button(scr, "Go Back", 500, 650, 50, BLACK, WHITE, resp=game.start, scale=1.3))
 		return out
 
