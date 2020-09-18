@@ -46,7 +46,8 @@ class Letter_Placeholder:
 
 
 class Letter:
-	def __init__(self, game, scr, key, letter_smol, letter_big):
+	def __init__(self, game, scr, key, letter_smol, letter_big, unlocks):
+		self.unlock = unlocks
 		self.game = game
 		self.key = key
 		self.scr = scr
@@ -58,6 +59,7 @@ class Letter:
 		self.small_button = Rect_Button(scr, BLACK, 1150 - w / 2, 650 - h / 2, w, h, resp=self.click)
 		self.smol = letter_smol
 		self.big_letter = letter_big
+		self.big_button = Rect_Button(scr, BLACK, 200, 100, 1156, 561)
 		self.angle = 0
 		self.t = 0.5
 		self.angle_max = 20
@@ -65,12 +67,14 @@ class Letter:
 		self.factor = self.base_factor
 		self.active_letter = self.smol
 		self.done = 1500
+		self.yps = 0.05
 		return
 
 	def click(self):
 		if self.small:
 			self.small = False
 			self.big = True
+			self.last_move = time()
 		return
 
 	def letter_blit(self):
@@ -85,6 +89,7 @@ class Letter:
 
 	def deactivate(self):
 		self.game.done(self.key)
+		self.game.unlock(self.unlock)
 		return
 
 	def blit(self):
@@ -102,18 +107,24 @@ class Letter:
 		elif self.big:
 			for i in range(0, len(self.big_letter) - 1, 1):
 				self.big_letter[i].blit()
+			move = self.get_move()
 			for obj in self.big_letter:
 				if self.done > 0:
-					obj.move_y(-1) 
-					self.done -= 1
+					obj.move_y(move) 
+					self.done -= -move
 			mouse = get_pos()
 			click = get_pressed()
 			x, y, w, h = self.big_letter[-1].rect
-			if self.big_letter[-1].is_clicked() and self.done == 0:
+			if self.big_button.is_clicked() and self.done <= 0:
 				self.deactivate()
 		else:
 			self.game.active_letter = Letter_Placeholder()
 		return
+
+	def get_move(self):
+		y = 1 / (time() - self.last_move)
+		self.last_move = time()
+		return y * self.yps * -1
 
 
 class Letters:
@@ -122,10 +133,16 @@ class Letters:
 		# will add those later when I'll have them in my sprites
 		letter_sprites = []
 		self.letter_dict = {}
+		unlocks = {}
+		unlock_index = {0: ["Machine", "dollars", "coins"]}
 		scr = game.scr
 		for i, key in enumerate(dic):
 			big = get_big(i, scr)
-			self.letter_dict[key] = Letter(game, scr, key, letter_smol, big)
+			if i in unlock_index:
+				new = unlock_index[i]
+				for n in new:
+					unlocks[n] = True
+			self.letter_dict[key] = Letter(game, scr, key, letter_smol, big, unlocks)
 		return
 
 	def __getitem__(self, key):

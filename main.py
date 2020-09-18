@@ -1,5 +1,5 @@
 from game import Game
-
+from os import remove
 
 
 

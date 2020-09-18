@@ -8,6 +8,7 @@ def Generate_Buttons(game):
 	# a bit of a headache but it runs once per initiation and saves me from writing
 	# a butt load of code
 	scr = game.scr
+	hidden = Hidden(game)
 	prices = game.prices
 	values = game.values
 	levels = game.levels
@@ -20,16 +21,18 @@ def Generate_Buttons(game):
 		current_level = levels[name]
 		price = current_prices[current_level + 1]
 		value = current_values[current_level + 1]
-		out.append(Buy_Button(game, name, price, value, i, current_level + 1))
+		out.append(Buy_Button(game, name, price, value, i, current_level + 1, hidden))
 	return out
 
 
 class Buy_Button:
 	def __init__(self, *args):
 		# unpack the args values because I can't be bothered to write all those parameters
-		self.game, self.name, self.price, self.value, index, self.level = args
-		self.button = Text_Button(self.game.scr, str(self.price), 150 + index * 150, 510 if index < 8 else 710, 50, WHITE, DARK_GREEN, resp=self.buy)
-		self.level_button = Text(self.game.scr, f"Level {self.level}", 150 + index * 150, 560 if index < 8 else 760, 30, WHITE)
+		self.game, self.name, self.price, self.value, index, self.level, self.hidden = args
+		self.x, self.y = 150 + index * 150, 400 if index < 8 else 610
+		self.button = Text_Button(self.game.scr, str(self.price), self.x, self.y, 50, WHITE, DARK_GREEN, resp=self.buy)
+		self.level_button = Text(self.game.scr, f"Level {self.level}", self.x, self.y + 50, 30, WHITE)
+		self.ava = self.game.unlocked[self.name]
 		self.__lock = False
 		return
 
@@ -37,8 +40,11 @@ class Buy_Button:
 		return f"level: {self.level}, price: {self.price}"
 
 	def blit(self):
-		self.button.blit()
-		self.level_button.blit()
+		if self.ava:
+			self.button.blit()
+			self.level_button.blit()
+		else:
+			self.hidden.blit(self.x, self.y)
 		return
 
 	def __update(self):
@@ -69,5 +75,16 @@ class Buy_Button:
 			self.price = game.prices[self.name][self.level]
 			self.button.update_text(str(self.price))
 		self.__update()
+		return
+	pass
+
+class Hidden:
+	def __init__(self, game):
+		self.sprite = game.sprites["buy_placeholder"]
+		self.scr = game.scr
+		return
+
+	def blit(self, x, y):
+		self.scr.blit(self.sprite, (x, y))
 		return
 	pass

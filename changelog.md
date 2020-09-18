@@ -2,8 +2,13 @@
 
 ## Version 0.7:
 - added credits
-- moved the game blitting system to a director based one (should improve performance but tbh idrk) 
-
+- moved the game blitting system to a director based one (should improve performance and memory usage but tbh idrk) 
+- letter animation no longer depends on framerate
+- replaced and keywords with nested ifs to improve performance (seems like a long shot but it kinda worked)
+- added placeholder for locked upgrades
+- letters now have an ability to unlock new upgrades
+- fixed issue where you couldn't click on the letter to make it dissappear
+- added option to cap framerate to 60 in settings
 
 ## Version 0.6:
 - fixed bug where the machine buying button won't load

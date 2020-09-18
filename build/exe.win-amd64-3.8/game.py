@@ -13,6 +13,7 @@ from time import sleep as wait
 import inspect
 from letters import Letter_Placeholder, Letters
 from sprite_manager import get_sprites
+from location import Director
 
 
 # *slaps class*
@@ -29,9 +30,10 @@ class Game_Type:
 		self.fill = self.scr.fill
 		self.fps_counter = FPS_Counter(self.scr)
 		self.update = pygame.display.update
-		self.default_settings = {"Show FPS Counter": True}
-		self.current_settings = self.get_settings()
+		self.default_settings = {"Show FPS Counter": True, "Cap FPS To 60": False}
 		self.create_config()
+		self.current_settings = self.get_settings()
+		self.clock = pygame.time.Clock()
 		return
 
 	def create_config(self):
@@ -63,6 +65,8 @@ class Game_Type:
 
 
 	def check_exit(self):
+		if self.get_settings()["Cap FPS To 60"]:
+			self.clock.tick(60)
 		if self.get_settings()["Show FPS Counter"]:
 			self.fps_counter.blit()
 		for event in pygame.event.get():
@@ -78,10 +82,12 @@ class Game_Type:
 class Game(Game_Type):
 	def __init__(self):
 		super().__init__()
+		self.money = Money()
+		self.blit_money = self.money.start
 		self.menu = Scenes.get_games_menu(self)
 		self.settings = Scenes.get_settings(self)
+		self.credits = Scenes.get_credits(self)
 		self.settings_else = Scenes.get_settings_else(self)
-		self.money = Money()
 		return
 
 	def start(self):
@@ -90,10 +96,6 @@ class Game(Game_Type):
 			self.check_exit()
 			self.menu.blit()
 			self.update()
-		return
-
-	def blit_money(self):
-		self.money.start()
 		return
 
 	def update_config(self, setting_value):
@@ -113,23 +115,33 @@ class Game(Game_Type):
 				self.update_config(setting.get_status())
 			self.update()
 		return
+
+	def blit_credits(self):
+		while True:
+			self.fill(BLACK)
+			self.check_exit()
+			self.credits.blit()
+			self.update()
+		return
 	pass
 
 class Money(Game_Type):
 	def __init__(self):
 		super().__init__()
 		self.sprites = get_sprites()
+		self.director = Director(self)
 		self.machine = Machine(self.scr, self.sprites)
 		self.HUD = HUD(self.scr, self)
 		self.dis = Dis(self.scr)
 		self.moneys = 8654105
 		self.constructors = {"dollars": Dollar, "coins": Coin}
-		self.maxes = {"Machine": 0, "dollars": 1, "coins": 0}
+		self.maxes = {"Machine": 0, "dollars":5, "coins": 5}
 		self.current_values = {"Machine": 0, "dollars": 1, "coins": 0}
 		self.prices = {"Machine": [100, 250, 500], "dollars": [50, 100, 200], "coins": [200, 500, 1000]}
 		self.values = {"Machine": [None, None, None], "dollars": [2, 5, 10], "coins": [5, 10, 20]}
 		self.levels = {"Machine": -1, "dollars": -1, "coins": -1}
 		self.names = ["Machine", "dollars", "coins"]
+		self.unlocked = {"Machine": True, "dollars": True, "coins": False}
 		dollars = Group(name="dollars")
 		coins = Group(name="coins")
 		machine = Group(name="Machine")
@@ -183,32 +195,28 @@ class Money(Game_Type):
 		# this is stupid, could use __getitem__ instead but this is more intuitive(?)
 		return self.constructors[name]
 
-	def make_money(self):
-		# fill all of the money groups
-		for top, group, value_key in zip(self.maxes, self.groups, self.current_values):
-			if self.current_values[value_key] == 0:
-				continue
-			assert top == group.name
-			if group < self.maxes[top]:
-				group.append(self.get_const(top)(self.scr, self.current_values[top], self.machine, self.sprites[top]))
-		return
-
-	def blit_groups(self):
-		for group in self.groups:
-			group.blit()
-		return
-
-	def clean_groups(self):
-		# remove objects that are no longer on screen and add moneys to player
-		for group, value in zip(self.groups, self.current_values):
-			count = group.remove(lambda obj: obj.y > 800 or obj.y < 0, count=True)
-			self.moneys += count * self.current_values[value]
-		return
-
 	def check_inbox(self):
 		for key in self.thresholds:
-			if not self.thresholds[key] and self.moneys >= key:
-				self.active_letter = self.letters[key].reset()
+			if not self.thresholds[key]:
+				if self.moneys >= key:
+					self.active_letter = self.letters[key].reset()
+		return
+
+	def refill_director(self):
+		for key in self.maxes:
+			if key == "Machine":
+				continue
+			left = self.maxes[key] - self.director.count(key)
+			if left > 0:
+				self.director.add(key, left)
+		return
+
+	def clean_director(self):
+		for key in self.director:
+			for loc in self.director.blit_dict[key]:
+				if loc.y > 800 or loc.y < 0:
+					self.moneys += self.current_values[loc.type]
+					self.director.blit_dict[key].remove(loc)
 		return
 
 	def game(self):
@@ -217,9 +225,9 @@ class Money(Game_Type):
 			self.machine.blit()
 			self.update_HUD()
 			if self.machine.active:
-				self.make_money()
-			self.blit_groups()
-			self.clean_groups()
+				self.refill_director()
+			self.director.blit()
+			self.clean_director()
 			if type(self.active_letter) == Letter_Placeholder:
 				self.check_inbox()
 			self.active_letter.blit()
@@ -237,12 +245,11 @@ class Money(Game_Type):
 
 	def shop(self):
 		while True:
-			self.blit_groups()
 			self.fill(DARK_GREEN)
 			self.check_exit()
 			if self.machine.active:
-				self.make_money()
-			self.clean_groups()
+				self.refill_director()
+			self.clean_director()
 			self.shop_menu.blit()
 			self.update_HUD()
 			self.update()
@@ -293,5 +300,11 @@ class Money(Game_Type):
 			else:
 				self.current_values[button.name] = self.values[button.name][button.level]
 			button.update(self)
+		return
+
+	def unlock(self, unlocks):
+		for un in unlocks:
+			self.unlocked[un] = unlocks[un]
+		self.shop_menu = Scenes.get_money_shop(self)
 		return
 	pass

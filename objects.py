@@ -32,19 +32,26 @@ class Button:
     def check_click(self):
         # check if the button is being click
         mouse = get_pos()
-        click = get_pressed()
         x, y, w, h = self.rect
-        return x + w > mouse[0] > x and y + h > mouse[1] > y and click[0] == 1
+        if x + w > mouse[0] > x:
+            if y + h > mouse[1] > y:
+                if get_pressed()[0] == 1:
+                    return True
+        return False
 
     def blit(self):
         # implement click delay to prevent instant clicks
-        if self.check_click() and time() - self.last_click >= self.delay_time:
-            self.last_click = time()
-            self.resp()
+        if time() - self.last_click >= self.delay_time:
+            if self.check_click():
+                self.last_click = time()
+                self.resp()
         return
 
     def is_clicked(self):
-        return self.check_click() and time() - self.last_click >= self.delay_time
+        if self.check_click():
+            if time() - self.last_click >= self.delay_time:
+                return True
+        return False
     pass
 
 class Rect_Button(Button):

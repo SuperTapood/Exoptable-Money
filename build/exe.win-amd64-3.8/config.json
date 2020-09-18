@@ -1,1 +1,1 @@
-{"Show FPS Counter": false}
+{"Show FPS Counter": true, "Cap FPS To 60": false}

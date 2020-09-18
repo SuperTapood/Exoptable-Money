@@ -30,9 +30,10 @@ class Game_Type:
 		self.fill = self.scr.fill
 		self.fps_counter = FPS_Counter(self.scr)
 		self.update = pygame.display.update
-		self.default_settings = {"Show FPS Counter": True}
-		self.current_settings = self.get_settings()
+		self.default_settings = {"Show FPS Counter": True, "Cap FPS To 60": False}
 		self.create_config()
+		self.current_settings = self.get_settings()
+		self.clock = pygame.time.Clock()
 		return
 
 	def create_config(self):
@@ -64,6 +65,8 @@ class Game_Type:
 
 
 	def check_exit(self):
+		if self.get_settings()["Cap FPS To 60"]:
+			self.clock.tick(60)
 		if self.get_settings()["Show FPS Counter"]:
 			self.fps_counter.blit()
 		for event in pygame.event.get():
@@ -132,12 +135,13 @@ class Money(Game_Type):
 		self.dis = Dis(self.scr)
 		self.moneys = 8654105
 		self.constructors = {"dollars": Dollar, "coins": Coin}
-		self.maxes = {"Machine": 0, "dollars":50, "coins": 50}
+		self.maxes = {"Machine": 0, "dollars":5, "coins": 5}
 		self.current_values = {"Machine": 0, "dollars": 1, "coins": 0}
 		self.prices = {"Machine": [100, 250, 500], "dollars": [50, 100, 200], "coins": [200, 500, 1000]}
 		self.values = {"Machine": [None, None, None], "dollars": [2, 5, 10], "coins": [5, 10, 20]}
 		self.levels = {"Machine": -1, "dollars": -1, "coins": -1}
 		self.names = ["Machine", "dollars", "coins"]
+		self.unlocked = {"Machine": True, "dollars": True, "coins": False}
 		dollars = Group(name="dollars")
 		coins = Group(name="coins")
 		machine = Group(name="Machine")
@@ -193,8 +197,9 @@ class Money(Game_Type):
 
 	def check_inbox(self):
 		for key in self.thresholds:
-			if not self.thresholds[key] and self.moneys >= key:
-				self.active_letter = self.letters[key].reset()
+			if not self.thresholds[key]:
+				if self.moneys >= key:
+					self.active_letter = self.letters[key].reset()
 		return
 
 	def refill_director(self):
@@ -240,12 +245,11 @@ class Money(Game_Type):
 
 	def shop(self):
 		while True:
-			self.blit_groups()
 			self.fill(DARK_GREEN)
 			self.check_exit()
 			if self.machine.active:
-				self.make_money()
-			self.clean_groups()
+				self.refill_director()
+			self.clean_director()
 			self.shop_menu.blit()
 			self.update_HUD()
 			self.update()
@@ -296,5 +300,11 @@ class Money(Game_Type):
 			else:
 				self.current_values[button.name] = self.values[button.name][button.level]
 			button.update(self)
+		return
+
+	def unlock(self, unlocks):
+		for un in unlocks:
+			self.unlocked[un] = unlocks[un]
+		self.shop_menu = Scenes.get_money_shop(self)
 		return
 	pass

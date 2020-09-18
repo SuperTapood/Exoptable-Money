@@ -22,7 +22,7 @@ class Falling_Object:
 		## TODO: implement the angle thingy ##
 		angle = randint(35, 45)
 		self.dir = randint(0, 1)
-		self.t = uniform(0.1, 0.3)
+		self.t = uniform(2, 5)
 		self.ratio = self.__get_ratio(angle)
 		self.up = False
 		self.remain_time = 3

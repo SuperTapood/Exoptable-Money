@@ -61,8 +61,9 @@ class HUD:
 		# imma need to reverse the number in order to correctly place the ","
 		num = num[::-1]
 		for i, digit in enumerate(num):
-			if i % 3 == 0 and i > 0:
-				out += ","
+			if i % 3 == 0:
+				if i > 0:
+					out += ","
 			out += digit
 		# reverse the number back so it makes sense
 		return out[::-1]
@@ -86,6 +87,7 @@ class HUD:
 class FPS_Counter:
 	def __init__(self, scr):
 		self.counter = Text(scr, "", 1140, 10, 25, WHITE)
+		self.dec_factor = 10
 		self.last = time()
 		return
 
@@ -97,7 +99,7 @@ class FPS_Counter:
 			fps = 1 / spf
 		except ZeroDivisionError:
 			fps = 1000
-		return f"{int(fps * 10) / 10} FPS"
+		return f"{int(fps * self.dec_factor) / self.dec_factor} FPS"
 
 	def blit(self):
 		self.counter.update_text(str(self))
