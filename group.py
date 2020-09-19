@@ -1,10 +1,12 @@
-
+from functools import total_ordering
+from collections import deque
 # so many useless function
 # just so many useless functions
 
+@total_ordering
 class Group:
 	def __init__(self, name=""):
-		self.__objects = []
+		self.__objects = deque([])
 		self.name = name
 		return
 

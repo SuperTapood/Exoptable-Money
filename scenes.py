@@ -11,10 +11,6 @@ class Scenes:
 	def get_money_main(scr, resp, resp2, resp3):
 		objs = Group()
 		objs.append(Text(scr, "Exoptable Money", 200, 20, 100, WHITE))
-		# the money machine:
-		# objs.append(Rect(scr, BLACK, 400, 420, 300, 300))
-		# objs.append(Rect(scr, BLACK, 700, 500, 200, 50))
-		# objs.append(Rect(scr, BLACK, 900, 500, 50, 200))
 		objs.append(Text_Button(scr, "Resume Thy Journey", 50, 250, 50, WHITE, DARK_GREEN, resp=resp))
 		objs.append(Text_Button(scr, "Start Thy Journey Anew", 50, 350, 50, WHITE, DARK_GREEN, resp=resp2))
 		objs.append(Text_Button(scr, "Delete All Thy Data", 50, 450, 50, WHITE, DARK_GREEN, resp=resp3))
@@ -67,4 +63,13 @@ class Scenes:
 		out.append(Text(scr, "master1203 - Cat Stock Image", 50, 150, 40, WHITE))
 		out.append(Text_Button(scr, "Go Back", 500, 650, 50, BLACK, WHITE, resp=game.start, scale=1.3))
 		return out
+
+	def get_HUD(scr, sprites, pull):
+		money_bg = Image(scr, sprites["money_bg"], 5, -60)
+		pulldown = Image_Button(scr, sprites["hud_pulldown"], 1150, 0, resp = pull)
+		return money_bg, pulldown
+
+	def get_money(scr):
+		money = Text(scr, "0", 25, 50, 50, WHITE)
+		return money
 

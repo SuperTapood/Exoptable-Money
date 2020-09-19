@@ -14,7 +14,8 @@ import inspect
 from letters import Letter_Placeholder, Letters
 from sprite_manager import get_sprites
 from location import Director
-
+from functools import cached_property, lru_cache
+from collections import deque
 
 # *slaps class*
 # these bad boys can fit so many goddamn attributes in them
@@ -65,6 +66,7 @@ class Game_Type:
 
 
 	def check_exit(self):
+		# print(self.fps_counter)
 		if self.get_settings()["Cap FPS To 60"]:
 			self.clock.tick(60)
 		if self.get_settings()["Show FPS Counter"]:
@@ -135,7 +137,7 @@ class Money(Game_Type):
 		self.dis = Dis(self.scr)
 		self.moneys = 8654105
 		self.constructors = {"dollars": Dollar, "coins": Coin}
-		self.maxes = {"Machine": 0, "dollars":5, "coins": 5}
+		self.maxes = {"Machine": 0, "dollars":1, "coins": 0}
 		self.current_values = {"Machine": 0, "dollars": 1, "coins": 0}
 		self.prices = {"Machine": [100, 250, 500], "dollars": [50, 100, 200], "coins": [200, 500, 1000]}
 		self.values = {"Machine": [None, None, None], "dollars": [2, 5, 10], "coins": [5, 10, 20]}
@@ -145,8 +147,8 @@ class Money(Game_Type):
 		dollars = Group(name="dollars")
 		coins = Group(name="coins")
 		machine = Group(name="Machine")
-		self.groups = [machine, dollars, coins]
-		self.thresholds = {100: False}
+		self.groups = deque([machine, dollars, coins])
+		self.thresholds = {"100": False}
 		self.main_menu = Scenes.get_money_main(self.scr, self.__game_n_load, self.game, self.del_data)
 		self.shop_menu = Scenes.get_money_shop(self)
 		self.letters = Letters(self, self.scr, self.thresholds, self.sprites)
@@ -163,6 +165,7 @@ class Money(Game_Type):
 		self.active_letter = Letter_Placeholder()
 		return
 
+	@cached_property
 	def show_dis(self):
 		while True:
 			self.fill(BLACK)
@@ -198,7 +201,7 @@ class Money(Game_Type):
 	def check_inbox(self):
 		for key in self.thresholds:
 			if not self.thresholds[key]:
-				if self.moneys >= key:
+				if self.moneys >= int(key):
 					self.active_letter = self.letters[key].reset()
 		return
 
@@ -261,6 +264,7 @@ class Money(Game_Type):
 		return
 
 
+	@lru_cache(maxsize = 128)
 	def data_generate(self):
 		# generate the save data I need
 		arr = []
@@ -268,6 +272,8 @@ class Money(Game_Type):
 		arr.append(self.maxes)
 		arr.append(self.current_values)
 		arr.append(self.levels)
+		arr.append(self.unlocked)
+		arr.append(self.thresholds)
 		return arr
 
 	def load(self):
@@ -275,13 +281,19 @@ class Money(Game_Type):
 		try:
 			data = json.load(open("data.json", "r"))
 			self.moneys = data[0]
-			for key, _, _ in zip(maxes := data[1], values := data[2], levels := data[3]):
+			for key, _, _, _ in zip(maxes := data[1], values := data[2], levels := data[3]
+				, unlocked := data[4]):
 				self.maxes[key] = maxes[key]
 				self.current_values[key] = values[key]
 				self.levels[key] = levels[key]
+				self.unlocked[key] = unlocked[key]
+			for key in data[5]:
+				self.thresholds[key] = data[5][key]
+			self.active_letter = self.letters.get_active(self.moneys, self.thresholds)
 			self.shop_menu = Scenes.get_money_shop(self)
 		except Exception as e:
-			# print(e)
+			# loading can fail in various unfun ways
+			print(e)
 			pass
 		return
 

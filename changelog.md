@@ -9,6 +9,12 @@
 - letters now have an ability to unlock new upgrades
 - fixed issue where you couldn't click on the letter to make it dissappear
 - added option to cap framerate to 60 in settings
+- added unlocked attribute to the save-load functions
+- implmented cached properties and lru_caching to reduce computing load
+- optimized group object with total ordering decorator
+- object physics no longer tied to frame rate (or maybe it does, I actually dont know anymore)
+- replaced all lists with deques to boost performance even further
+- added ground for a new hud
 
 ## Version 0.6:
 - fixed bug where the machine buying button won't load
@@ -23,6 +29,7 @@
 - added a little animation for the letter
 - fixed issue with overlaping text in the data delete dialouge
 - added go back button to the settings menu
+- loading will now reverse letter deactivation
 
 
 ## Version 0.5:

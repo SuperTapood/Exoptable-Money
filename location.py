@@ -1,6 +1,7 @@
 from random import randint, uniform
 from math import cos, sqrt
 import pygame
+from functools import lru_cache
 from time import time
 
 class Tracker:
@@ -10,11 +11,15 @@ class Tracker:
 		self.y = 400
 		self.ratio = self.__get_ratio(angle=randint(35, 45))
 		self.dir = randint(0, 1)
+		if self.dir == 0:
+			self.dir = -1
 		self.t = uniform(0.1, 0.3)
 		self.angle = 0
 		self.rotation_speed = uniform(1, 3)
+		self.last = time()
 		return
 
+	@lru_cache(maxsize = 32)
 	def __get_ratio(self, angle):
 		# some trigonometry for good measure #
 		adj = 500
@@ -27,13 +32,12 @@ class Tracker:
 		return ratio
 
 	def update(self):
-		if self.dir == 0:
-			self.y -= 1 / self.t
-			self.x -= self.ratio / self.t
-		else:
-			self.y -= 1 / self.t
-			self.x += self.ratio / self.t
+		t = time() - self.last
+		self.y -= 1 / (self.t - t)
+		x_factor = self.ratio / (self.t - t)
+		self.x += self.dir * x_factor
 		self.angle += self.rotation_speed
+		self.last = time()
 		return
 	pass
 

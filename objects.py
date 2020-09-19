@@ -3,6 +3,7 @@ from pygame.mouse import get_pressed, get_pos
 from time import time
 import pygame
 from math import ceil
+from functools import lru_cache
 
 # some mindless object templates
 

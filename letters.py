@@ -126,6 +126,10 @@ class Letter:
 		self.last_move = time()
 		return y * self.yps * -1
 
+	def default(self):
+		game, scr, key, letter_smol, letter_big, unlocks = self.game, self.scr, self.key, self.smol, self.big_letter, self.unlock
+		return Letter(game, scr, key, letter_smol, letter_big, unlocks)
+
 
 class Letters:
 	def __init__(self, game, scr, dic, sprites):
@@ -147,4 +151,10 @@ class Letters:
 
 	def __getitem__(self, key):
 		return self.letter_dict[key]
+
+	def get_active(self, money, thresholds):
+		if money in thresholds:
+			if thresholds[money] == False:
+				return self.letter_dict[money].default(self.letter_dict[money])
+		return Letter_Placeholder()
 	pass

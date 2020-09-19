@@ -2,6 +2,7 @@ from objects import Rect, Rect_Button, Rect_Text, Text_Button, Text, Image, Imag
 from colors import *
 from time import time
 from group import Group
+# from scenes import Scenes
 
 ## called those complex object because it sounded cool ##
 
@@ -135,4 +136,44 @@ class Dis:
 		self.yes.blit()
 		self.no.blit()
 		return
+	pass
+
+
+class new_hud:
+	def __init__(self, scr, sprites):
+		self.money_bg, self.pulldown = Scenes.get_HUD(scr, sprites, lambda: self.pull_menu)
+		self.moneys = 0
+		self.money = Scenes.get_money(scr)
+		self.moving = 0
+		self.down = False
+		self.t = 2
+		self.max = 500
+		return
+
+	def pulldown_menu(self):
+		if self.down:
+			self.moving = -1
+		else:
+			self.moving = 1
+		return
+
+	def format(self, num):
+		out = ""
+		# imma need to reverse the number in order to correctly place the ","
+		num = str(num)[::-1]
+		for i, digit in enumerate(num):
+			if i % 3 == 0:
+				if i > 0:
+					out += ","
+			out += digit
+		# reverse the number back so it makes sense
+		return out[::-1]
+
+	def blit(self, moneys):
+		self.money_bg.blit()
+		self.pulldown.blit()
+		if moneys != self.moneys:
+			self.money.update_text(self.format(moneys))
+			self.moneys = moneys
+		self.money.blit()
 	pass
