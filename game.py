@@ -139,10 +139,10 @@ class Money(Game_Type):
 		self.constructors = {"dollars": Dollar, "coins": Coin}
 		self.maxes = {"Machine": 0, "dollars":1, "coins": 0}
 		self.current_values = {"Machine": 0, "dollars": 1, "coins": 0}
-		self.prices = {"Machine": [100, 250, 500], "dollars": [50, 100, 200], "coins": [200, 500, 1000]}
-		self.values = {"Machine": [None, None, None], "dollars": [2, 5, 10], "coins": [5, 10, 20]}
+		self.prices = {"Machine": deque([100, 250, 500]), "dollars": deque([50, 100, 200]), "coins": deque([200, 500, 1000])}
+		self.values = {"Machine": deque([None, None, None]), "dollars": deque([2, 5, 10]), "coins": deque([5, 10, 20])}
 		self.levels = {"Machine": -1, "dollars": -1, "coins": -1}
-		self.names = ["Machine", "dollars", "coins"]
+		self.names = deque(["Machine", "dollars", "coins"])
 		self.unlocked = {"Machine": True, "dollars": True, "coins": False}
 		dollars = Group(name="dollars")
 		coins = Group(name="coins")
