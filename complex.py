@@ -70,12 +70,12 @@ class HUD:
 		# reverse the number back so it makes sense
 		return out[::-1]
 
-	def update(self, **kwargs):
+	def update(self, money):
 		# I really wish there was a better way to do this
 		# nah for loops would be worse
-		if self.moneys != str(kwargs["money"]):
-			self.moneys = str(kwargs["money"])
-			self.money.update_text(self.format(str(kwargs["money"])))
+		if self.moneys != str(money):
+			self.moneys = str(money)
+			self.money.update_text(self.format(str(money)))
 		self.money.blit()
 		self.save.blit()
 		self.load.blit()

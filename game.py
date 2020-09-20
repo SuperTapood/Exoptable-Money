@@ -1,7 +1,7 @@
 import pygame
 from scenes import Scenes
 from colors import *
-from complex import Machine, new_hud, FPS_Counter, Dis
+from complex import Machine, new_hud, HUD, FPS_Counter, Dis
 from time import time
 from group import Group
 from fallables import Dollar, Coin
@@ -133,7 +133,8 @@ class Money(Game_Type):
 		self.sprites = get_sprites()
 		self.director = Director(self)
 		self.machine = Machine(self.scr, self.sprites)
-		self.HUD = new_hud(self.scr, self.sprites, self.save, self.load)
+		# self.HUD = new_hud(self.scr, self.sprites, self.save, self.load)
+		self.HUD = HUD(self.scr, self)
 		self.dis = Dis(self.scr)
 		self.moneys = 8654105
 		self.constructors = {"dollars": Dollar, "coins": Coin}
