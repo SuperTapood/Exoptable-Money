@@ -1,5 +1,4 @@
 from objects import *
-from complex import *
 from group import Group
 from colors import BLACK, WHITE, DARK_GREEN, RED, GREEN
 from buy import Generate_Buttons
@@ -64,12 +63,16 @@ class Scenes:
 		out.append(Text_Button(scr, "Go Back", 500, 650, 50, BLACK, WHITE, resp=game.start, scale=1.3))
 		return out
 
-	def get_HUD(scr, sprites, pull):
+	def get_HUD(scr, sprites, pull, buy_bg, save, load):
 		money_bg = Image(scr, sprites["money_bg"], 5, -60)
-		pulldown = Image_Button(scr, sprites["hud_pulldown"], 1150, 0, resp = pull)
-		return money_bg, pulldown
+		pulldown = Image_Button(scr, sprites["hud_pulldown"], 1150, 0, resp=pull)
+		buy_bg = Image(scr, buy_bg, 0, -500)
+		buy_buttons = Group()
+		buy_buttons.append(Image_Button(scr, sprites["full_screen"], 1100, -450, resp=lambda: None))
+		buy_buttons.append(Image_Button(scr, sprites["save"], 1100, -300, resp=save))
+		buy_buttons.append(Image_Button(scr, sprites["load"], 1100, -150, resp=load))
+		return money_bg, pulldown, buy_bg, buy_buttons
 
 	def get_money(scr):
-		money = Text(scr, "0", 25, 50, 50, WHITE)
-		return money
+		return Text(scr, "0", 25, 50, 50, WHITE)
 

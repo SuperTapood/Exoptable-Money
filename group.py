@@ -75,4 +75,9 @@ class Group:
 		if count:
 			return coun
 		return
+
+	def shift_y(self, factor):
+		for obj in self:
+			obj.add_Y(factor)
+		return
 	pass

@@ -2,7 +2,8 @@ from objects import Rect, Rect_Button, Rect_Text, Text_Button, Text, Image, Imag
 from colors import *
 from time import time
 from group import Group
-# from scenes import Scenes
+from scenes import Scenes
+import pygame
 
 ## called those complex object because it sounded cool ##
 
@@ -140,21 +141,25 @@ class Dis:
 
 
 class new_hud:
-	def __init__(self, scr, sprites):
-		self.money_bg, self.pulldown = Scenes.get_HUD(scr, sprites, lambda: self.pull_menu)
+	def __init__(self, scr, sprites, save, load):
+		buy_bg = pygame.transform.scale(sprites['buy_bg'], (1280, 520))
+		self.money_bg, self.pulldown, self.buy_bg, self.buttons = Scenes.get_HUD(scr, sprites, self.pull_menu, buy_bg, save, load)
 		self.moneys = 0
 		self.money = Scenes.get_money(scr)
+		self.factor = 20
 		self.moving = 0
+		# start down while testing
+		self.moving = self.factor
 		self.down = False
-		self.t = 2
 		self.max = 500
+		self.current = 0
 		return
 
-	def pulldown_menu(self):
-		if self.down:
-			self.moving = -1
-		else:
-			self.moving = 1
+	def pull_menu(self):
+		if self.down == True:
+			self.moving = -self.factor
+		elif self.down == False:
+			self.moving = self.factor
 		return
 
 	def format(self, num):
@@ -169,9 +174,23 @@ class new_hud:
 		# reverse the number back so it makes sense
 		return out[::-1]
 
-	def blit(self, moneys):
+	def update(self, moneys):
 		self.money_bg.blit()
 		self.pulldown.blit()
+		self.buy_bg.blit()
+		self.buttons.blit()
+		self.money_bg.y += self.moving
+		self.pulldown.add_Y(self.moving)
+		self.current += self.moving
+		self.money.y += self.moving
+		self.buy_bg.y += self.moving
+		self.buttons.shift_y(self.moving)
+		if self.current == self.max:
+			self.moving = 0
+			self.down = True
+		if self.current == 0:
+			self.moving = 0
+			self.down = False
 		if moneys != self.moneys:
 			self.money.update_text(self.format(moneys))
 			self.moneys = moneys

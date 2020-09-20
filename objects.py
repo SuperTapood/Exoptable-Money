@@ -231,5 +231,10 @@ class Image_Button(Button):
         self.img.blit()
         super().blit()
         return
+
+    def add_Y(self, add):
+        self.img.y += add
+        self.rect = self.img.get_rekt()
+        return
     pass
 
